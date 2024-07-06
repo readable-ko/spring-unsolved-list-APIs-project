@@ -1,4 +1,4 @@
-package com.unsolved.hguapis.siteUser;
+package com.unsolved.hguapis.user;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,12 +14,12 @@ import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class SiteUserSecurityService implements UserDetailsService {
-    private final SiteUserRepository siteUserRepository;
+public class UserSecurityService implements UserDetailsService {
+    private final UserRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<SiteUser> _siteUser = this.siteUserRepository.findByUsername(username);
+        Optional<SiteUser> _siteUser = this.userRepository.findByUsername(username);
         if (_siteUser.isEmpty()) {
             throw new UsernameNotFoundException("사용자를 찾을 수 없습니다.");
         }

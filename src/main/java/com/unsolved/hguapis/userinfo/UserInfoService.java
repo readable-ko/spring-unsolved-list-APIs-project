@@ -1,4 +1,4 @@
-package com.unsolved.hguapis.user;
+package com.unsolved.hguapis.userinfo;
 
 import java.util.ArrayList;
 import java.util.List;

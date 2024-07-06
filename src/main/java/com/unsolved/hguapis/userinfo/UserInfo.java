@@ -1,4 +1,4 @@
-package com.unsolved.hguapis.user;
+package com.unsolved.hguapis.userinfo;
 
 import com.unsolved.hguapis.usersolved.UserInfoProblemSolved;
 import jakarta.persistence.Column;

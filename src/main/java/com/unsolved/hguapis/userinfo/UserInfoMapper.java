@@ -1,4 +1,4 @@
-package com.unsolved.hguapis.user;
+package com.unsolved.hguapis.userinfo;
 
 public class UserInfoMapper {
     public static UserInfoDto ContributeDtoToDto(UserInfoContributeDto userInfoContributeDto) {

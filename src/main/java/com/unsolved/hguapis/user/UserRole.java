@@ -1,4 +1,4 @@
-package com.unsolved.hguapis.siteUser;
+package com.unsolved.hguapis.user;
 
 import lombok.Getter;
 

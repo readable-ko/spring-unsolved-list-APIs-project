@@ -1,4 +1,4 @@
-package com.unsolved.hguapis.siteUser;
+package com.unsolved.hguapis.user;
 
 import com.unsolved.hguapis.exception.DataNotFoundException;
 import java.util.Optional;
@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class SiteUserService {
-    private final SiteUserRepository siteUserRepository;
+public class UserService {
+    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
     public SiteUser create(String username, String email, String password) {
@@ -19,12 +19,12 @@ public class SiteUserService {
                 .username(username)
                 .build();
 
-        siteUserRepository.save(siteUser);
+        userRepository.save(siteUser);
         return siteUser;
     }
 
-    public SiteUser getSiteUser(String username) {
-        Optional<SiteUser> siteUser = this.siteUserRepository.findByUsername(username);
+    public SiteUser getUser(String username) {
+        Optional<SiteUser> siteUser = this.userRepository.findByUsername(username);
         if (siteUser.isPresent()) {
             return siteUser.get();
         } else {

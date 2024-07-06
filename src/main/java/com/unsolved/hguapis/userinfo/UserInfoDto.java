@@ -1,4 +1,4 @@
-package com.unsolved.hguapis.user;
+package com.unsolved.hguapis.userinfo;
 
 import com.unsolved.hguapis.problem.LevelType;
 import java.time.LocalDateTime;

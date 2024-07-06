@@ -1,4 +1,4 @@
-package com.unsolved.hguapis.user;
+package com.unsolved.hguapis.userinfo;
 
 import java.time.LocalDateTime;
 import lombok.AccessLevel;

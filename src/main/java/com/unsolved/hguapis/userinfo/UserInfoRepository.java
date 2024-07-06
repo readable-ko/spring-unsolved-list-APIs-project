@@ -1,4 +1,4 @@
-package com.unsolved.hguapis.user;
+package com.unsolved.hguapis.userinfo;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 public interface UserInfoRepository extends JpaRepository<UserInfo, Long> {
 
     @Query("SELECT"
-            + " new com.unsolved.hguapis.user.UserInfoDto("
+            + " new com.unsolved.hguapis.userinfo.UserInfoDto("
             + "u.username,"
             + "u.tier, "
             + "u.solvedCount, "
@@ -20,7 +20,7 @@ public interface UserInfoRepository extends JpaRepository<UserInfo, Long> {
     Page<UserInfoDto> findAllUserInfo(@Param("kw") String kw, Pageable pageable);
 
     @Query("SELECT"
-            + " new com.unsolved.hguapis.user.UserInfoContributeDto("
+            + " new com.unsolved.hguapis.userinfo.UserInfoContributeDto("
             + "u.username,"
             + "u.tier, "
             + "COUNT(*), "
