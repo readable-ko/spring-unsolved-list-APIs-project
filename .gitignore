@@ -40,3 +40,6 @@ out/
 /src/main/resources/application.properties
 /src/main/resources/application-server.properties
 /src/main/resources/application-prod.properties
+
+### static resources ###
+/src/main/resources/static/images/**
