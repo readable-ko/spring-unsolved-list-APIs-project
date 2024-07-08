@@ -13,12 +13,13 @@
                     </a>
                     에 연동 및 학교 등록 부탁드립니다.<br>
                     건의사항이나 버그가 있다면
-                    <a href="https://flowbite.com/docs/getting-started/introduction/" class="hover:underline">
+                    <a href="https://github.com/readable-ko/unsolved-list-APIs-project" target="_blank"
+                       class="hover:underline">
                         여기로 신고해주세요!
                     </a>
                 </p>
                 <div class="space-y-4 sm:flex sm:space-y-0 sm:space-x-4">
-                    <a href="https://github.com/readable-ko/unsolved-list-APIs-project"
+                    <a href="https://github.com/readable-ko/unsolved-list-APIs-project" target="_blank"
                        class="inline-flex items-center justify-center w-full px-5 py-3 text-sm font-medium text-center text-gray-900 border border-gray-200 rounded-lg sm:w-auto hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
                         <svg class="w-4 h-4 mr-2 text-gray-500 dark:text-gray-400" xmlns="http://www.w3.org/2000/svg"
                              viewBox="0 0 496 512">
@@ -27,7 +28,7 @@
                         </svg>
                         View on GitHub
                     </a>
-                    <a href="https://github.com/readable-ko/unsolved-list-APIs-project"
+                    <a href="https://github.com/readable-ko/unsolved-list-APIs-project" target="_blank"
                        class="inline-flex items-center justify-center w-full px-5 py-3 text-sm font-medium text-center text-gray-900 border border-gray-200 rounded-lg sm:w-auto hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
                         <svg class="w-4 h-4 mr-2 text-gray-500 dark:text-gray-400" xmlns="http://www.w3.org/2000/svg"
                              viewBox="0 0 496 512">
@@ -51,17 +52,15 @@
             <div class="grid grid-cols-2 gap-8 text-gray-500 sm:gap-12 sm:grid-cols-3 lg:grid-cols-6 dark:text-gray-400">
 
                 <!--브론즈-->
-                <a href="/problem?kw=&page=0&types=BRONZE" class="flex items-center lg:justify-center w-48">
-                    <div class="card card-compact bg-base-100 shadow-xl">
+                <a href="/problem?kw=&page=0&types=BRONZE" class="flex items-center lg:justify-center w-1/6 sm:w-auto">
+                    <div class="card card-compact bg-base-100 shadow-xl bg-white dark:bg-gray-1000">
                         <figure>
-                            <img
-                                    src="/images/Bronze_Banner.webp" class="object-cover w-full"
-                                    alt="Bronze banner image"/>
+                            <div class="w-full h-7 bg-orange-300 dark:bg-amber-900"></div>
                         </figure>
                         <div class="card-body">
-                            <h2 class="card-title text-xl font-bold tracking-tight text-gray-900 dark:text-white">
+                            <h2 class="card-title text-xl font-bold tracking-tight text-gray-900 dark:text-white w-fit">
                                 Unsolved
-                                <span class="bg-orange-300 text-amber-800 text-xs font-bold me-2 px-2.5 py-0.5 rounded dark:bg-amber-900 dark:text-amber-300">Bronze</span>
+                                <span class="bg-orange-300 text-amber-800 text-xs font-bold me-1 px-2 py-0.5 rounded dark:bg-amber-900 dark:text-amber-300">Bronze</span>
                             </h2>
                             <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">학교에서 안 푼<br> 브론즈 문제 목록</p>
                             <div class="card-actions justify-center">
@@ -79,12 +78,10 @@
                     </div>
                 </a>
                 <!--실버-->
-                <a href="/problem?kw=&page=0&types=SILVER" class="flex items-center lg:justify-center w-48">
-                    <div class="card card-compact bg-base-100 shadow-xl">
+                <a href="/problem?kw=&page=0&types=SILVER" class="flex items-center lg:justify-center w-1/6 sm:w-auto">
+                    <div class="card card-compact bg-base-100 shadow-xl bg-white dark:bg-gray-1000">
                         <figure>
-                            <img
-                                    src="/images/Silver_Banner.webp" class="w-max"
-                                    alt="Silver banner image"/>
+                            <div class="w-full h-7 bg-stone-100 dark:bg-stone-800"></div>
                         </figure>
                         <div class="card-body">
                             <h2 class="card-title text-xl font-bold tracking-tight text-gray-900 dark:text-white">
@@ -107,12 +104,10 @@
                     </div>
                 </a>
                 <!--골드-->
-                <a href="/problem?kw=&page=0&types=GOLD" class="flex items-center lg:justify-center w-48">
-                    <div class="card card-compact bg-base-100 shadow-xl">
+                <a href="/problem?kw=&page=0&types=GOLD" class="flex items-center lg:justify-center w-1/6 sm:w-auto">
+                    <div class="card card-compact bg-base-100 shadow-xl bg-white dark:bg-gray-1000">
                         <figure>
-                            <img
-                                    src="/images/Gold_Banner.webp"
-                                    alt="Gold banner image"/>
+                            <div class="w-full h-7 bg-yellow-100 dark:bg-yellow-800"></div>
                         </figure>
                         <div class="card-body">
                             <h2 class="card-title text-xl font-bold tracking-tight text-gray-900 dark:text-white">
@@ -135,13 +130,10 @@
                     </div>
                 </a>
                 <!--플레-->
-                <a th:href="@{/unsolved-hgu/ranking}" class="flex items-center lg:justify-center w-48">
-                    <div class="card card-compact bg-base-100 shadow-xl">
+                <a th:href="@{/unsolved-hgu/ranking}" class="flex items-center lg:justify-center w-1/6 sm:w-auto">
+                    <div class="card card-compact bg-base-100 shadow-xl bg-white dark:bg-gray-1000">
                         <figure>
-                            <img
-                                    src="/images/Platinum_Banner.webp"
-                                    class="w-full"
-                                    alt="Platinum banner image"/>
+                            <div class="w-full h-7 bg-emerald-100 dark:bg-emerald-900"></div>
                         </figure>
                         <div class="card-body">
                             <h2 class="card-title text-xl font-bold tracking-tight text-gray-900 dark:text-white">
@@ -164,17 +156,16 @@
                     </div>
                 </a>
                 <!--핫한 문제-->
-                <a href="/problem?kw=&page=0&types=FAVORITE" class="flex items-center lg:justify-center w-48">
-                    <div class="card card-compact bg-base-100 shadow-xl">
+                <a href="/problem?kw=&page=0&types=FAVORITE"
+                   class="flex items-center lg:justify-center w-1/6 sm:w-auto">
+                    <div class="card card-compact bg-base-100 shadow-xl bg-white dark:bg-gray-1000">
                         <figure>
-                            <img
-                                    src="/images/Grandmaster_Banner.webp"
-                                    alt="hot problem banner image"/>
+                            <div class="w-full h-7 bg-pink-100 dark:bg-pink-900"></div>
                         </figure>
                         <div class="card-body">
                             <h2 class="card-title text-xl font-bold tracking-tight text-gray-900 dark:text-white">
-                                Loved
-                                <span class="bg-pink-100 text-pink-800 text-xs font-bold me-2 px-2.5 py-0.5 rounded dark:bg-pink-900 dark:text-pink-300">HOT</span>
+                                Favorite
+                                <span class="bg-pink-100 text-pink-800 text-xs font-bold me-2 px-3 py-0.5 rounded dark:bg-pink-900 dark:text-pink-300">Loved</span>
                             </h2>
                             <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">학교에서 많이 푼<br> 문제 목록</p>
                             <div class="card-actions justify-center">
@@ -191,19 +182,17 @@
                         </div>
                     </div>
                 </a>
-                <a th:href="@{/question/list}" class="flex items-center lg:justify-center w-48">
-                    <div class="card card-compact bg-base-100 shadow-xl">
+                <a th:href="@{/question/list}" class="flex items-center lg:justify-center w-1/6 sm:w-auto">
+                    <div class="card card-compact bg-base-100 shadow-xl bg-white dark:bg-gray-1000">
                         <figure>
-                            <img
-                                    src="/images/Diamond_Banner.webp"
-                                    alt="board banner image"/>
+                            <div class="w-44 h-7 bg-blue-100 dark:bg-blue-900"></div>
                         </figure>
                         <div class="card-body">
                             <h2 class="card-title text-xl font-bold tracking-tight text-gray-900 dark:text-white">
-                                게시판
-                                <span class="bg-blue-100 text-blue-800 text-xs font-bold me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">Board</span>
+                                Board
+                                <span class="bg-blue-100 text-blue-800 text-xs font-bold me-2 px-3 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">ask</span>
                             </h2>
-                            <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">자유로운 글을 작성하는 곳입니다.</p>
+                            <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">자유로운 글을<br> 작성하는 곳입니다.</p>
                             <div class="card-actions justify-center">
                                 <div class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-purple-700 rounded-lg hover:bg-purple-800 focus:ring-4 focus:outline-none focus:ring-purple-300 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800">
                                     목록 보기
