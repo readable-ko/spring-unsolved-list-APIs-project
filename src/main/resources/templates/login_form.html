@@ -4,7 +4,7 @@
         <div class="relative overflow-x-auto">
             <div class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <form class="max-w-sm mx-auto" th:action="@{/user/login}" method="post">
-                    <!--                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />-->
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     <div class="mb-5">
                         <div th:if="${param.error}">
                             <div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 alert">
