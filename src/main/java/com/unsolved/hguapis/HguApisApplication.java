@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class HguApIsApplication {
+public class HguApisApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(HguApIsApplication.class, args);
+        SpringApplication.run(HguApisApplication.class, args);
     }
 
 }
