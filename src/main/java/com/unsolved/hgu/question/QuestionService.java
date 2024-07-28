@@ -1,7 +1,7 @@
 package com.unsolved.hgu.question;
 
-import com.unsolved.hgu.DataNotFoundException;
 import com.unsolved.hgu.answer.Answer;
+import com.unsolved.hgu.exception.DataNotFoundException;
 import com.unsolved.hgu.user.SiteUser;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;

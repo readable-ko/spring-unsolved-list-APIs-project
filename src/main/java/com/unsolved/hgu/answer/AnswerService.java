@@ -1,6 +1,6 @@
 package com.unsolved.hgu.answer;
 
-import com.unsolved.hgu.DataNotFoundException;
+import com.unsolved.hgu.exception.DataNotFoundException;
 import com.unsolved.hgu.question.Question;
 import com.unsolved.hgu.user.SiteUser;
 import java.time.LocalDateTime;
