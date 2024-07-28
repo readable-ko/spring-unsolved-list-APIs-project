@@ -1,6 +1,6 @@
 package com.unsolved.hgu.user;
 
-import com.unsolved.hgu.DataNotFoundException;
+import com.unsolved.hgu.exception.DataNotFoundException;
 import java.util.Optional;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +19,7 @@ public class UserService {
                 .username(username)
                 .email(email)
                 .password(passwordEncoder.encode(password))
+                .role(UserRole.USER)
                 .build();
 
         this.userRepository.save(siteUser);
@@ -32,5 +33,10 @@ public class UserService {
         } else {
             throw new DataNotFoundException("Site user not found");
         }
+    }
+
+    public Boolean isExistEmail(String email) {
+        Optional<SiteUser> siteUser = this.userRepository.findByEmail(email);
+        return siteUser.isPresent();
     }
 }
