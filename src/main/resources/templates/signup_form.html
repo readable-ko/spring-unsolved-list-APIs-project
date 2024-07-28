@@ -15,9 +15,30 @@
                             <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                                 Email
                             </label>
-                            <input type="email" th:field="*{email}"
-                                   class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
-                                   placeholder="example@handong.edu" required/>
+                            <div class="flex gap-3">
+                                <input type="email" th:field="*{email}"
+                                       class=" email shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
+                                       placeholder="example@handong.edu" required/>
+                                <button id="email-button"
+                                        class="w-2/5 text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800">
+                                    메일 인증
+                                </button>
+                            </div>
+                        </div>
+                        <div class="mb-5 hidden" id="verification-section">
+                            <label for="verification-code"
+                                   class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                인증 번호
+                            </label>
+                            <div class="flex gap-3">
+                                <input type="text" id="verification-code"
+                                       class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
+                                       placeholder="인증번호 6자리를 입력해주세요."/>
+                                <button id="verification-button"
+                                        class="w-1/2 text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800">
+                                    인증번호 확인
+                                </button>
+                            </div>
                         </div>
                         <div class="mb-5">
                             <label for="username" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
@@ -61,5 +82,68 @@
             </div>
         </div>
     </section>
+    <script src="/jquery-3.7.1.js"></script>
 </div>
+<script layout:fragment="script">
+    $(document).ready(function () {
+        $("#email-button").on('click', function () {
+
+            let email = $("#email").val();
+            let emailRequestForm = {
+                email: email
+            };
+            $.ajax({
+                type: "POST",
+                url: "/user/emails/verification-request",
+                contentType: "application/json",
+                data: JSON.stringify(emailRequestForm),
+                success: function (response) {
+                    if (response.code) {
+                        alert("입력하신 메일로 인증번호가 전송되었습니다.");
+                        $("#verification-section").removeClass("hidden");
+                    } else if (response.error) {
+                        alert("메일 형식으로 입력해주세요!");
+                    } else {
+                        alert("인증번호를 받을 수 없습니다.");
+                    }
+                },
+                error: function () {
+                    alert("오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+                }
+            });
+        });
+
+        $("#verification-button").on('click', function () {
+            let email = $("#email").val();
+            let authString = $("#verification-code").val();
+            let emailVerifyForm = {
+                email: email,
+                authString: authString
+            };
+
+            $.ajax({
+                type: "POST",
+                url: "/user/emails/verification",
+                contentType: "application/json",
+                data: JSON.stringify(emailVerifyForm),
+                success: function (message) {
+                    if (message) {
+                        alert(message);
+                        $("#email").prop("disabled", true);
+                        $("#verification-code").prop("disabled", true);
+                    } else {
+                        alert("인증번호가 다릅니다. 다시 입력하세요.");
+                    }
+                },
+                error: function (xhr, status, error) {
+                    if (xhr.status == 500) {
+                        alert("잘못된 인증번호이거나, 인증 시간 만료입니다.");
+                    } else {
+                        alert("오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+                    }
+                }
+            })
+        })
+    });
+</script>
 </html>
