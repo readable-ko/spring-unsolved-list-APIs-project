@@ -1,6 +1,7 @@
 package com.unsolved.hgu.user;
 
 import jakarta.validation.Valid;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
@@ -28,12 +29,19 @@ public class UserController {
 
     @PostMapping("/signup")
     public String signup(@Valid UserCreateForm userCreateForm, BindingResult bindingResult) {
+        System.out.println(userCreateForm);
         if (bindingResult.hasErrors()) {
             return "signup_form";
         }
 
         if (!userCreateForm.getPassword1().equals(userCreateForm.getPassword2())) {
             bindingResult.rejectValue("password2", "Passwords do not match", "패스워드가 일치하지 않슴다");
+            return "signup_form";
+        }
+
+        if (!Objects.equals(userCreateForm.getLoginState(), LoginState.VERIFIED.getState())) {
+            LoginState loginState = LoginState.valueOf(userCreateForm.getLoginState());
+            bindingResult.rejectValue(loginState.getField(), "state error", loginState.getErrorMessage());
             return "signup_form";
         }
 

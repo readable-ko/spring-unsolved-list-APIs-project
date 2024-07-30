@@ -22,4 +22,9 @@ public class UserCreateForm {
 
     @NotEmpty(message = "사용자 비밀번호 확인은 필수 항목입니다.")
     private String password2;
+
+    @NotEmpty(message = "메일 인증이 필요합니다.")
+    private String verifyCode;
+
+    private String loginState = LoginState.NOTHING.getState();
 }
