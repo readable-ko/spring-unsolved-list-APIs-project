@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 public interface UserRepository extends JpaRepository<SiteUser, Long> {
     Optional<SiteUser> findByUsername(String username);
 
-    Optional<SiteUser> findByEmail(String email);
+    Optional<SiteUser> findByEmailAndProvider(String email, String provider);
 
     @Query("SELECT u "
             + "FROM SiteUser u "
