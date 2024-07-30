@@ -1,5 +1,6 @@
-package com.unsolved.hgu.user;
+package com.unsolved.hgu.user.oauth;
 
+import com.unsolved.hgu.user.SiteUser;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;

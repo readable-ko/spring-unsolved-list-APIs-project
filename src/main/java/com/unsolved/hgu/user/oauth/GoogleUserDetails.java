@@ -1,4 +1,4 @@
-package com.unsolved.hgu.user;
+package com.unsolved.hgu.user.oauth;
 
 import java.util.Map;
 import lombok.AllArgsConstructor;
