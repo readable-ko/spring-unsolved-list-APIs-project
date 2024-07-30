@@ -30,7 +30,7 @@ public class SiteUser {
 
     private String password;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String email;
 
     @Enumerated(EnumType.STRING)
