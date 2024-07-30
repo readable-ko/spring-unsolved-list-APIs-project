@@ -19,6 +19,7 @@ public class UserService {
                 .username(username)
                 .email(email)
                 .password(passwordEncoder.encode(password))
+                .provider("site")
                 .role(UserRole.USER)
                 .build();
 
@@ -36,7 +37,7 @@ public class UserService {
     }
 
     public Boolean isExistEmail(String email) {
-        Optional<SiteUser> siteUser = this.userRepository.findByEmail(email);
+        Optional<SiteUser> siteUser = this.userRepository.findByEmailAndProvider(email, "site");
         return siteUser.isPresent();
     }
 }
