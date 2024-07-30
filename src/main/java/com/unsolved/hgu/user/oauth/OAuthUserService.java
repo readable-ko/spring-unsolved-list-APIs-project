@@ -1,5 +1,9 @@
-package com.unsolved.hgu.user;
+package com.unsolved.hgu.user.oauth;
 
+import com.unsolved.hgu.exception.DataNotFoundException;
+import com.unsolved.hgu.user.SiteUser;
+import com.unsolved.hgu.user.UserRepository;
+import com.unsolved.hgu.user.UserRole;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +16,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Service
 @Slf4j
-class GoogleUserService extends DefaultOAuth2UserService {
+class OAuthUserService extends DefaultOAuth2UserService {
     private final UserRepository userRepository;
 
     @Override
@@ -22,15 +26,8 @@ class GoogleUserService extends DefaultOAuth2UserService {
         log.info("getAttributes : {}", oAuth2User.getAttributes());
 
         String provider = userRequest.getClientRegistration().getRegistrationId();
-        OAuth2UserInfo oAuth2UserInfo = null;
+        OAuth2UserInfo oAuth2UserInfo = getOAuth2UserInfo(oAuth2User, provider);
 
-        //Google
-        if (provider.equals("google")) {
-            log.info("구글 로그인");
-            oAuth2UserInfo = new GoogleUserDetails(oAuth2User.getAttributes());
-        }
-
-        assert oAuth2UserInfo != null;
         Optional<SiteUser> findUser = userRepository.findByLoginId(provider, oAuth2UserInfo.getProviderId());
 
         if (findUser.isPresent()) {
@@ -48,5 +45,15 @@ class GoogleUserService extends DefaultOAuth2UserService {
         userRepository.save(siteUser);
 
         return new OAuth2UserDetails(siteUser, oAuth2User.getAttributes());
+    }
+
+    public OAuth2UserInfo getOAuth2UserInfo(OAuth2User oAuth2User, String provider) {
+        //Find provider
+        for (OAuthType oAuthType : OAuthType.values()) {
+            if (oAuthType.getProvider().equals(provider)) {
+                return oAuthType.getUserInfo(oAuth2User.getAttributes());
+            }
+        }
+        throw new DataNotFoundException("No user found with provider " + provider);
     }
 }
