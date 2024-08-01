@@ -34,8 +34,10 @@ class OAuthUserService extends DefaultOAuth2UserService {
             return new OAuth2UserDetails(findUser.get(), oAuth2User.getAttributes());
         }
 
+        String username = oAuth2UserInfo.getName() + "_" + provider + "_" + oAuth2UserInfo.getEmail().split("@")[0];
+
         SiteUser siteUser = SiteUser.builder()
-                .username(oAuth2UserInfo.getName())
+                .username(username)
                 .email(oAuth2UserInfo.getEmail())
                 .provider(provider)
                 .providerId(oAuth2UserInfo.getProviderId())
