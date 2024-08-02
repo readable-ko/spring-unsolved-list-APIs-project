@@ -1,5 +1,6 @@
 package com.unsolved.hgu.question;
 
+import com.unsolved.hgu.user.SiteUser;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
@@ -15,6 +16,8 @@ public interface QuestionRepository extends JpaRepository<Question, Integer> {
     Optional<Question> findBySubjectAndContent(String s, String content);
 
     List<Question> findBySubjectLike(String str);
+
+    List<Question> findAllByAuthor(SiteUser author);
 
     Page<Question> findAll(Pageable pageable);
 
