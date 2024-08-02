@@ -1,5 +1,6 @@
 package com.unsolved.hgu.user;
 
+import com.unsolved.hgu.problem.Problem;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -7,18 +8,18 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 
-@Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@Builder(toBuilder = true)
 @Entity
 public class SiteUser {
     @Id
@@ -33,10 +34,13 @@ public class SiteUser {
     @Column(nullable = false)
     private String email;
 
-    @Enumerated(EnumType.STRING)
     @Column
+    @Enumerated(EnumType.STRING)
     private UserRole role;
 
     private String provider;
     private String providerId;
+
+    @ManyToMany()
+    Set<Problem> savedProblem;
 }

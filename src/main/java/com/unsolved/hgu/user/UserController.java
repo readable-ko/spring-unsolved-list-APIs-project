@@ -1,5 +1,6 @@
 package com.unsolved.hgu.user;
 
+import com.unsolved.hgu.problem.ProblemService;
 import jakarta.validation.Valid;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class UserController {
 
     private final UserService userService;
+    private final ProblemService problemService;
 
     @GetMapping("/signup")
     public String signup(UserCreateForm userCreateForm) {
@@ -48,10 +50,10 @@ public class UserController {
         try {
             userService.create(userCreateForm.getUsername(), userCreateForm.getEmail(), userCreateForm.getPassword1());
         } catch (DataIntegrityViolationException e) {
-            bindingResult.reject("signupFailed", "이미 등록된 사용자 혹은 닉네임입니다.");
+            bindingResult.rejectValue("signupFailed", "duplicate username", "이미 등록된 사용자 혹은 닉네임입니다.");
             return "signup_form";
         } catch (Exception e) {
-            bindingResult.reject("signupFailed", e.getMessage());
+            bindingResult.rejectValue("signupFailed", "exception", e.getMessage());
             return "signup_form";
         }
 
