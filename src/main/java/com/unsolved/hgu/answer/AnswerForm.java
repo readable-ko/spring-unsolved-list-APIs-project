@@ -8,6 +8,6 @@ import lombok.Setter;
 @Setter
 @Getter
 public class AnswerForm {
-    @NotEmpty(message = "내용을 입력하쇼!")
+    @NotEmpty(message = "내용을 입력하세요!")
     private String content;
 }
