@@ -1,5 +1,7 @@
 package com.unsolved.hgu.problem;
 
+import com.unsolved.hgu.exception.DataNotFoundException;
+import com.unsolved.hgu.user.UserRepository;
 import com.unsolved.hgu.usersolved.SolvedProblemMapper;
 import com.unsolved.hgu.usersolved.UserInfoProblemSolved;
 import com.unsolved.hgu.usersolved.UserInfoProblemSolvedDto;
@@ -11,6 +13,7 @@ import jakarta.persistence.criteria.Root;
 import jakarta.persistence.criteria.Subquery;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,6 +26,7 @@ import org.springframework.stereotype.Service;
 public class ProblemService {
     private final ProblemRepository problemRepository;
     private final UserInfoProblemSolvedService userInfoProblemSolvedService;
+    private final UserRepository siteUserRepository;
 
 
     private Specification<ProblemDto> search(String kw, LevelType types) {
@@ -76,5 +80,13 @@ public class ProblemService {
         problems = this.problemRepository.findAll(spec, pageable);
 
         return problems.map(ProblemMapper::toDto);
+    }
+
+    public Problem getProblemById(int id) {
+        Optional<Problem> problem = this.problemRepository.findProblemsById(id);
+        if (problem.isPresent()) {
+            return problem.get();
+        }
+        throw new DataNotFoundException("Problem not found");
     }
 }
