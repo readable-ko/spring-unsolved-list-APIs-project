@@ -1,4 +1,8 @@
 <html layout:decorate="~{layout}">
+<div layout:fragment="header">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+</div>
 <div layout:fragment="content">
     <section class="bg-white dark:bg-gray-900">
         <div class="h-8"></div>
@@ -13,32 +17,52 @@
                     <div class="flex w-full justify-between pb-3">
                         <div class="flex flex-col">
                             <dt class="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Email 주소</dt>
-                            <dd class="text-lg font-semibold">yourname@flowbite.com</dd>
+                            <dd class="text-lg font-semibold" id="email" th:text="${user.getEmail()}"></dd>
                         </div>
                     </div>
-                    <div class="flex w-full justify-between py-3 items-center">
-                        <div class="flex flex-col">
-                            <dt class="mb-1 text-gray-500 md:text-lg dark:text-gray-400">닉네임</dt>
-                            <dd class="text-lg font-semibold">92Miles DriveUSA</dd>
-                        </div>
-                        <a href="#"
-                           class="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
-                            변경하기
-                            <svg class="w-5 h-5 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20"
-                                 xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd"
-                                      d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-                                      clip-rule="evenodd"></path>
-                            </svg>
-                        </a>
+                    <div class="flex flex-col"
+                         th:if="${#authentication.getPrincipal().getUsername() != user.getUsername()}">
+                        <dt class="mb-1 text-gray-500 md:text-lg dark:text-gray-400">닉네임</dt>
+                        <dd class="text-lg font-semibold" th:text="${user.getUsername()}"></dd>
+                    </div>
+                    <div class="flex w-full justify-between py-3 items-center"
+                         th:if="${#authentication.getPrincipal().getUsername() == user.getUsername()}">
+                        <form th:action="@{|/user/update/username|}" method="post" th:object="${usernameForm}"
+                              class="flex w-full justify-between items-center">
+                            <div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+                                 role="alert" th:if="${#fields.hasAnyErrors()}">
+                                            <span class="font-medium" th:each="err: ${#fields.allErrors()}"
+                                                  th:text="${err}"></span>
+                            </div>
+                            <div class="flex flex-col">
+                                <dt class="mb-1 text-gray-500 md:text-lg dark:text-gray-400">닉네임</dt>
+                                <input type="text" id="username" name="username" th:field="*{username}"
+                                       class="bg-gray-50 border border-gray-300 text-gray-900 text-lg font-semibold rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                       th:value="${user.getUsername()}" required/>
+                            </div>
+                            <a sec:authorize="isAuthenticated()" href="javascript:void(0);"
+                               th:data-uri="@{|/user/update/username|}"
+                               th:if="${#authentication.getPrincipal().getUsername() == user.getUsername()}"
+                               id="change-button"
+                               class="inline-flex items-center justify-center px-4 py-3 text-base font-medium text-center text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
+                                변경하기
+                                <svg class="w-5 h-5 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd"
+                                          d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+                                          clip-rule="evenodd"></path>
+                                </svg>
+                            </a>
+                        </form>
                     </div>
                     <div class="flex w-full justify-between py-3 items-center">
                         <div class="flex flex-col">
                             <dt class="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Solved 계정 연동 여부</dt>
                             <dd class="text-lg font-semibold">+00 123 456 789 / +12 345 678</dd>
                         </div>
-                        <a href="#"
-                           class="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
+                        <a href="#" sec:authorize="isAuthenticated()"
+                           th:if="${#authentication.getPrincipal().getUsername() == user.getUsername()}"
+                           class="inline-flex items-center justify-center px-4 py-3 text-base font-medium text-center text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
                             연동하기
                             <svg class="w-5 h-5 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20"
                                  xmlns="http://www.w3.org/2000/svg">
@@ -47,6 +71,12 @@
                                       clip-rule="evenodd"></path>
                             </svg>
                         </a>
+                    </div>
+                    <div class="flex w-full justify-between pb-3">
+                        <div class="flex flex-col">
+                            <dt class="mb-1 text-gray-500 md:text-lg dark:text-gray-400">가입 경로</dt>
+                            <dd class="text-lg font-semibold" id="provider" th:text="${user.getProvider()}"></dd>
+                        </div>
                     </div>
                 </dl>
 
@@ -57,8 +87,8 @@
                         <label for="tabs" class="sr-only">Select tab</label>
                         <select id="tabs"
                                 class="bg-gray-50 border-0 border-b border-gray-200 text-gray-900 text-sm rounded-t-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                            <option>Statistics</option>
-                            <option>Services</option>
+                            <option>Solved.ac 정보</option>
+                            <option>내 정보</option>
                             <!--                            <option>FAQ</option>-->
                         </select>
                     </div>
@@ -78,13 +108,6 @@
                                 내 정보
                             </button>
                         </li>
-                        <!--                        <li class="w-full">-->
-                        <!--                            <button id="faq-tab" data-tabs-target="#faq" type="button" role="tab" aria-controls="faq"-->
-                        <!--                                    aria-selected="false"-->
-                        <!--                                    class="inline-block w-full p-4 rounded-se-lg bg-gray-50 hover:bg-gray-100 focus:outline-none dark:bg-gray-700 dark:hover:bg-gray-600">-->
-                        <!--                                FAQ-->
-                        <!--                            </button>-->
-                        <!--                        </li>-->
                     </ul>
                     <div id="fullWidthTabContent" class="border-t border-gray-200 dark:border-gray-600">
                         <div class="hidden p-4 bg-white rounded-lg md:p-8 dark:bg-gray-800" id="stats" role="tabpanel"
@@ -120,7 +143,7 @@
                                          viewBox="0 0 20 20">
                                         <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"/>
                                     </svg>
-                                    <span class="leading-tight">게시글 0 건</span>
+                                    <span class="leading-tight" th:text="@{|게시글 ${#lists.size(questions)} 건|}"></span>
                                 </li>
                                 <li class="flex space-x-2 rtl:space-x-reverse items-center">
                                     <svg class="flex-shrink-0 w-3.5 h-3.5 text-blue-600 dark:text-blue-500"
@@ -128,7 +151,7 @@
                                          viewBox="0 0 20 20">
                                         <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"/>
                                     </svg>
-                                    <span class="leading-tight">댓글 0 건</span>
+                                    <span class="leading-tight" th:text="@{|답변 ${#lists.size(answers)} 건|}"></span>
                                 </li>
                                 <li class="flex space-x-2 rtl:space-x-reverse items-center">
                                     <svg class="flex-shrink-0 w-3.5 h-3.5 text-blue-600 dark:text-blue-500"
@@ -136,7 +159,8 @@
                                          viewBox="0 0 20 20">
                                         <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"/>
                                     </svg>
-                                    <span class="leading-tight">저장한 문제 0 건</span>
+                                    <span class="leading-tight"
+                                          th:text="@{|저장한 문제 ${#lists.size(user.getSavedProblem())} 건|}"></span>
                                 </li>
                             </ul>
                         </div>
@@ -261,8 +285,8 @@
                      viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                     <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"></path>
                 </svg>
-                <h3 class="mb-2 text-2xl font-bold dark:text-white">주의 사항</h3>
-                <p class="font-light text-gray-500 dark:text-gray-400">Solved.ac 학교 정보가 한동대학교가 아닌 경우 데이터가 갱신되지 않습니다.</p>
+                <h3 class="mb-2 text-2xl font-bold dark:text-white">닉네임 주의 사항</h3>
+                <p class="font-light text-gray-500 dark:text-gray-400">닉네임은 5분 간격으로 변경 가능하며, 중복된 닉네임으로 변경은 불가능합니다.</p>
             </div>
         </div>
         <div></div>
@@ -294,55 +318,20 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            1002번
+                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                        th:each="problem: ${user.getSavedProblem()}">
+                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                            th:text="${problem.id}">
                         </th>
-                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            Apple MacBook Pro 17"
+                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                            th:text="${problem.getTitle()}">
                         </th>
-                        <td class="px-6 py-4">
-                            Silver
+                        <td class="px-6 py-4" th:text="${problem.getLevel()}">
                         </td>
-                        <td class="px-6 py-4">
-                            Laptop
+                        <td class="px-6 py-4" th:text="${problem.getTags()}">
                         </td>
-                        <td class="px-6 py-4">
-                            $2999
-                        </td>
-                    </tr>
-                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            1002번
-                        </th>
-                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            Microsoft Surface Pro
-                        </th>
-                        <td class="px-6 py-4">
-                            White
-                        </td>
-                        <td class="px-6 py-4">
-                            Laptop PC
-                        </td>
-                        <td class="px-6 py-4">
-                            $1999
-                        </td>
-                    </tr>
-                    <tr class="bg-white dark:bg-gray-800">
-                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            1002번
-                        </th>
-                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            Magic Mouse 2
-                        </th>
-                        <td class="px-6 py-4">
-                            Black
-                        </td>
-                        <td class="px-6 py-4">
-                            Accessories
-                        </td>
-                        <td class="px-6 py-4">
-                            $99
+                        <td class="px-6 py-4" th:href="@{|https://acmicpc.net/problem/${problem.id}|}">
+                            풀기
                         </td>
                     </tr>
                     </tbody>
@@ -357,5 +346,36 @@
         </div>
     </section>
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.4.1/dist/flowbite.min.js"></script>
+    <script src="/jquery-3.7.1.js"></script>
 </div>
+<script layout:fragment="script">
+    $(document).ready(function () {
+        let csrfToken = $("meta[name='_csrf']").attr("content");
+        let csrfHeader = $("meta[name='_csrf_header']").attr("content");
+        $("#change-button").on('click', function () {
+            let username = $("#username").val();
+
+            $.ajax({
+                type: "POST",
+                url: "/user/update/username",
+                data: {username: username},
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader(csrfHeader, csrfToken);
+                },
+                success: function (response) {
+
+                    if (response.success) {
+                        alert(`닉네임을 ${username}로 변경했습니다.`);
+                        location.href = response.success;
+                    } else {
+                        alert(response.error);
+                    }
+                },
+                error: function () {
+                    alert("닉네임은 3글자 이상 20글자 이하 '영문숫자한글-_'만 가능합니다.");
+                }
+            });
+        });
+    });
+</script>
 </html>
