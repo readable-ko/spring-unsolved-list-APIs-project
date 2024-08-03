@@ -75,7 +75,7 @@ public class UserService {
         }
     }
 
-    public SiteUserDto getUserDto(String username) {
+    public MyPageUserDto getUserDto(String username) {
         Optional<SiteUser> optionalSiteUser = this.userRepository.findByUsername(username);
         if (optionalSiteUser.isEmpty()) {
             throw new DataNotFoundException("Site user not found");
@@ -85,8 +85,8 @@ public class UserService {
         List<Question> questions = this.questionRepository.findAllByAuthor(siteUser);
         List<Answer> answers = this.answerRepository.findAllByAuthor(siteUser);
 
-        return SiteUserDto.builder()
-                .siteUser(siteUser)
+        return MyPageUserDto.builder()
+                .siteUser(SiteUserMapper.toDto(siteUser))
                 .writtenQuestions(questions)
                 .writtenAnswers(answers)
                 .build();
