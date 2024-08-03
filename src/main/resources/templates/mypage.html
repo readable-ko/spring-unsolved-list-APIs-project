@@ -160,7 +160,7 @@
                                         <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"/>
                                     </svg>
                                     <span class="leading-tight"
-                                          th:text="@{|저장한 문제 ${#lists.size(user.getSavedProblem())} 건|}"></span>
+                                          th:text="@{|저장한 문제 ${user.getProblems().getTotalElements()} 건|}"></span>
                                 </li>
                             </ul>
                         </div>
@@ -286,7 +286,8 @@
                     <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"></path>
                 </svg>
                 <h3 class="mb-2 text-2xl font-bold dark:text-white">닉네임 주의 사항</h3>
-                <p class="font-light text-gray-500 dark:text-gray-400">닉네임은 5분 간격으로 변경 가능하며, 중복된 닉네임으로 변경은 불가능합니다.</p>
+                <p class="font-light text-gray-500 dark:text-gray-400" id="p-redirect">닉네임은 5분 간격으로 변경 가능하며, 중복된 닉네임으로
+                    변경은 불가능합니다.</p>
             </div>
         </div>
         <div></div>
@@ -319,24 +320,53 @@
                     </thead>
                     <tbody>
                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-                        th:each="problem: ${user.getSavedProblem()}">
+                        th:each="problem: ${user.getProblems()}">
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                            th:text="${problem.id}">
+                            th:text="${problem.getId()}">
                         </th>
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                             th:text="${problem.getTitle()}">
                         </th>
                         <td class="px-6 py-4" th:text="${problem.getLevel()}">
                         </td>
-                        <td class="px-6 py-4" th:text="${problem.getTags()}">
+                        <td class="px-6 py-4" th:text="${problem.getTagName()}">
                         </td>
-                        <td class="px-6 py-4" th:href="@{|https://acmicpc.net/problem/${problem.id}|}">
-                            풀기
+                        <td class="px-6 py-4 text-blue-600 hover:text-blue-800 hover:underline">
+                            <a th:href="@{|https://acmicpc.net/problem/${problem.id}|}" target="_blank">
+                                풀기
+                            </a>
                         </td>
                     </tr>
                     </tbody>
                 </table>
             </div>
+            <nav aria-label="Page navigation example" class="px-6 mt-2 max-w-md mx-auto flex-col w-full"
+                 th:if="${!user.getProblems().isEmpty()}">
+                <ul class="inline-flex -space-x-px text-base h-10 justify-items-center">
+                    <li class="page-item">
+                        <a th:if="${user.getProblems().hasPrevious}" href="javascript:void(0)"
+                           th:href="@{|?page=${user.getProblems().number -1}#p-redirect|}"
+                           class="page-link flex items-center justify-center px-4 h-10 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</a>
+                        <a th:unless="${user.getProblems().hasPrevious}" href="javascript:void(0)"
+                           th:href="@{|?page=${user.getProblems().number}#p-redirect|}"
+                           class="page-link flex items-center justify-center px-4 h-10 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</a>
+                    </li>
+                    <li th:each="page: ${#numbers.sequence(0, user.getProblems().totalPages - 1)}"
+                        th:if="${user.getProblems().number <= 1 ? page < 5 : (page >= (user.getProblems().number - 2) and page <= (user.getProblems().number + 2))}"
+                        th:classappend="${page == user.getProblems().number} ? 'text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white' : 'leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'">
+                        <a th:href="@{|?page=${page}#p-redirect|}" th:text="${page + 1}"
+                           class="page-link flex items-center justify-center px-4 h-10"></a>
+                    </li>
+                    <li class="page-item" th:classappend="${!user.getProblems().hasNext} ? 'disabled'">
+                        <a th:if="${user.getProblems().hasNext}"
+                           th:href="@{|?page=${user.getProblems().number + 1}#p-redirect|}"
+                           class="page-link flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</a>
+                        <a th:unless="${user.getProblems().hasNext}"
+                           th:href="@{|?page=${user.getProblems().number}#p-redirect|}"
+                           class="page-link flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</a>
+                    </li>
+                </ul>
+            </nav>
         </div>
     </section>
 
@@ -377,5 +407,6 @@
             });
         });
     });
+
 </script>
 </html>

@@ -163,10 +163,17 @@
                                 <td class="px-3 py-4">
                                     <form method="post" name="saveForm" th:id="'saveForm' + ${problem.id}">
                                         <a href="javascript:void(0);"
+                                           sec:authorize="isAuthenticated()"
+                                           th:if="${#authentication.isAuthenticated()}"
                                            th:data-uri="@{|/user/save/problem/${problem.id}|}"
                                            class="save-button h-full w-full font-medium text-blue-600 dark:text-blue-500 hover:underline">
-                                            <img src="/images/heart_outline.svg" alt="save_icon"/>
+                                            <img src="/images/heart_filled.svg"
+                                                 th:if="${userSaved.contains(problem.id)}" alt="save_cancel_icon"/>
+                                            <img src="/images/heart_outline.svg"
+                                                 th:unless="${userSaved.contains(problem.id)}" alt="save_icon"/>
                                         </a>
+                                        <img sec:authorize="isAnonymous()"
+                                             src="/images/heart_outline.svg" alt="save_icon"/>
                                     </form>
                                 </td>
                                 <th scope="row"
@@ -280,8 +287,10 @@
                     success: function (response) {
                         if (response) {
                             alert(`${problemId}을 저장했습니다.`);
+                            location.reload();
                         } else {
                             alert(`${problemId}를 제거했습니다.`);
+                            location.reload();
                         }
                     },
                     error: function () {

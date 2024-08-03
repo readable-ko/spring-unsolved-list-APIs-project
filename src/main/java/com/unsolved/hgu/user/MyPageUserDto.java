@@ -14,8 +14,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Builder(toBuilder = true)
 public class MyPageUserDto {
-    private SiteUserDto siteUser;
-
+    private SiteUserDto siteUserDto;
     private List<Question> writtenQuestions;
     private List<Answer> writtenAnswers;
 }

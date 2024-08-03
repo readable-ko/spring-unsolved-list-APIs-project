@@ -40,9 +40,11 @@ public class UserSelfController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping(value = "/detail/{username}")
-    public String detail(@PathVariable("username") String username, Model model, UsernameForm usernameForm) {
-        MyPageUserDto myPageUserDto = this.userService.getUserDto(username);
-        model.addAttribute("user", myPageUserDto.getSiteUser());
+    public String detail(@PathVariable("username") String username, Model model, UsernameForm usernameForm,
+                         @RequestParam(value = "page", defaultValue = "0") int page) {
+        MyPageUserDto myPageUserDto = this.userService.getUserDto(username, page);
+
+        model.addAttribute("user", myPageUserDto.getSiteUserDto());
         model.addAttribute("questions", myPageUserDto.getWrittenQuestions());
         model.addAttribute("answers", myPageUserDto.getWrittenAnswers());
 
@@ -60,12 +62,14 @@ public class UserSelfController {
     @ResponseBody
     public Map<String, String> updateUsername(@Valid UsernameForm usernameForm, Principal principal,
                                               BindingResult bindingResult,
+                                              @RequestParam(value = "page", defaultValue = "0") int page,
                                               Model model) {
-        MyPageUserDto myPageUserDto = this.userService.getUserDto(principal.getName());
+        MyPageUserDto myPageUserDto = this.userService.getUserDto(principal.getName(), page);
 
-        model.addAttribute("user", myPageUserDto.getSiteUser());
+        model.addAttribute("user", myPageUserDto.getSiteUserDto());
         model.addAttribute("questions", myPageUserDto.getWrittenQuestions());
         model.addAttribute("answers", myPageUserDto.getWrittenAnswers());
+
         SiteUser newUser;
         Map<String, String> response = new HashMap<>();
 
@@ -76,14 +80,14 @@ public class UserSelfController {
             return response;
         }
 
-        if (myPageUserDto.getSiteUser().getUsername().equals(usernameForm.getUsername())) {
+        if (myPageUserDto.getSiteUserDto().getUsername().equals(usernameForm.getUsername())) {
             response.put("error", "이미 사용 중인 유저명입니다.");
             return response;
         }
 
         try {
-            newUser = this.userService.modifyUserName(
-                    this.userService.getUser(myPageUserDto.getSiteUser().getUsername()), usernameForm.getUsername());
+            SiteUser siteUser = this.userService.getUser(myPageUserDto.getSiteUserDto().getUsername());
+            newUser = this.userService.modifyUserName(siteUser, usernameForm.getUsername());
         } catch (DataIntegrityViolationException e) {
             bindingResult.rejectValue("username", "username.exists", "Username already exists");
             response.put("error", "이미 존재하는 유저명입니다.");

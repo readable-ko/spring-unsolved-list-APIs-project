@@ -1,16 +1,11 @@
 package com.unsolved.hgu.user;
 
-import com.unsolved.hgu.problem.ProblemDto;
+import com.unsolved.hgu.problem.Problem;
 import com.unsolved.hgu.problem.ProblemMapper;
-import java.util.List;
+import org.springframework.data.domain.Page;
 
 public class SiteUserMapper {
-    public static SiteUserDto toDto(SiteUser siteUser) {
-        List<ProblemDto> problemDto = siteUser.getSavedProblem()
-                .stream()
-                .map(ProblemMapper::toDto)
-                .toList();
-        
+    public static SiteUserDto toDto(SiteUser siteUser, Page<Problem> problems) {
         return new SiteUserDto(siteUser.getId(),
                 siteUser.getUsername(),
                 siteUser.getPassword(),
@@ -18,7 +13,7 @@ public class SiteUserMapper {
                 siteUser.getRole(),
                 siteUser.getProvider(),
                 siteUser.getProviderId(),
-                problemDto
+                problems.map(ProblemMapper::toDto)
         );
     }
 }

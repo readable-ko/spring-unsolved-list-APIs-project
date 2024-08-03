@@ -1,12 +1,12 @@
 package com.unsolved.hgu.user;
 
 import com.unsolved.hgu.problem.ProblemDto;
-import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.Page;
 
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor
@@ -27,5 +27,5 @@ public class SiteUserDto {
 
     private String providerId;
 
-    private List<ProblemDto> problems;
+    private Page<ProblemDto> problems;
 }

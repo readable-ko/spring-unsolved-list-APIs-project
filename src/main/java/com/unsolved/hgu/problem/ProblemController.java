@@ -1,5 +1,6 @@
 package com.unsolved.hgu.problem;
 
+import com.unsolved.hgu.user.SiteUser;
 import com.unsolved.hgu.user.UserService;
 import java.security.Principal;
 import java.util.Set;
@@ -21,10 +22,11 @@ public class ProblemController {
                        @RequestParam(value = "kw", defaultValue = "") String kw,
                        @RequestParam(value = "types", defaultValue = "NONE") String types, Principal principal) {
         Page<ProblemDto> paging = this.problemService.getProblems(page, kw.strip(), types);
-        Set<Problem> userSaved = Set.of();
+        Set<Integer> userSaved = Set.of();
 
         if (principal != null) {
-            userSaved = this.userService.getUser(principal.getName()).getSavedProblem();
+            SiteUser siteUser = this.userService.getUser(principal.getName());
+            userSaved = this.problemService.getUserSolvedProblemIdsBySiteUser(siteUser);
         }
 
         model.addAttribute("paging", paging);
