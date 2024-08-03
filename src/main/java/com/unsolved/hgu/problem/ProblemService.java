@@ -5,7 +5,6 @@ import com.unsolved.hgu.user.SiteUser;
 import com.unsolved.hgu.user.UserRepository;
 import com.unsolved.hgu.usersolved.SolvedProblemMapper;
 import com.unsolved.hgu.usersolved.UserInfoProblemSolved;
-import com.unsolved.hgu.usersolved.UserInfoProblemSolvedDto;
 import com.unsolved.hgu.usersolved.UserInfoProblemSolvedService;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -68,21 +67,42 @@ public class ProblemService {
         };
     }
 
-    public Page<ProblemDto> getProblems(int page, String keyword, String types) {
+    private Page<ProblemDto> getFavoriteProblems(String keyword, int page) {
+        return this.userInfoProblemSolvedService.getProblems(keyword, page)
+                .map(SolvedProblemMapper::solvedToProblem);
+    }
+
+    private Page<ProblemDto> getSavedProblems(SiteUser siteUser, int page) {
         Pageable pageable = PageRequest.of(page, 10);
-        Page<Problem> problems;
+        return this.siteUserRepository.findSiteUserSavedProblems(siteUser, pageable)
+                .map(ProblemMapper::toDto);
+    }
+
+    private Page<ProblemDto> getDefaultProblems(String keyword, LevelType levelType, int page) {
+        Pageable pageable = PageRequest.of(page, 10);
+        Specification<ProblemDto> spec = search(keyword, levelType);
+        return this.problemRepository.findAll(spec, pageable)
+                .map(ProblemMapper::toDto);
+    }
+
+    public Page<ProblemDto> getProblems(int page, String keyword, String types, SiteUser siteUser) {
         LevelType levelType = LevelType.valueOf(types);
 
         if (levelType.equals(LevelType.FAVORITE)) {
-            Page<UserInfoProblemSolvedDto> userInfoProblemSolvedDto = this.userInfoProblemSolvedService.getProblems(
-                    keyword, page);
-            return userInfoProblemSolvedDto.map(SolvedProblemMapper::solvedToProblem);
+            return getFavoriteProblems(keyword, page);
+        } else if (levelType.equals(LevelType.SAVED)) {
+            return getSavedProblems(siteUser, page);
+        } else {
+            return getDefaultProblems(keyword, levelType, page);
         }
+    }
 
-        Specification<ProblemDto> spec = search(keyword, levelType);
-        problems = this.problemRepository.findAll(spec, pageable);
+    public Page<ProblemDto> getProblems(int page, String keyword, String types) {
+        return getProblems(page, keyword, types, null);
+    }
 
-        return problems.map(ProblemMapper::toDto);
+    public Page<ProblemDto> getProblemsBySiteUser(int page, String keyword, String types, SiteUser siteUser) {
+        return getProblems(page, keyword, types, siteUser);
     }
 
     public Set<Integer> getUserSolvedProblemIdsBySiteUser(SiteUser siteUser) {

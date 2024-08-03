@@ -21,12 +21,16 @@ public class ProblemController {
     public String list(Model model, @RequestParam(value = "page", defaultValue = "0") int page,
                        @RequestParam(value = "kw", defaultValue = "") String kw,
                        @RequestParam(value = "types", defaultValue = "NONE") String types, Principal principal) {
-        Page<ProblemDto> paging = this.problemService.getProblems(page, kw.strip(), types);
+        Page<ProblemDto> paging;
         Set<Integer> userSaved = Set.of();
 
+        //Login case
         if (principal != null) {
             SiteUser siteUser = this.userService.getUser(principal.getName());
             userSaved = this.problemService.getUserSolvedProblemIdsBySiteUser(siteUser);
+            paging = this.problemService.getProblemsBySiteUser(page, kw.strip(), types, siteUser);
+        } else {
+            paging = this.problemService.getProblems(page, kw.strip(), types);
         }
 
         model.addAttribute("paging", paging);

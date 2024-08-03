@@ -11,7 +11,8 @@ public enum LevelType {
     PLATINUM("플래티넘", 20),
     DIAMOND("다이아", 25),
     RUBY("루비", 30),
-    FAVORITE("많이", 40);
+    FAVORITE("많이", 40),
+    SAVED("저장", 50);
 
     private final String title;
     private final int level;
