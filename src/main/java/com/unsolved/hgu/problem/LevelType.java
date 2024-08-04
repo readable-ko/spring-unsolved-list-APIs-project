@@ -1,8 +1,10 @@
 package com.unsolved.hgu.problem;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
+@AllArgsConstructor
 public enum LevelType {
     NONE("없음", 0),
     BRONZE("브론즈", 5),
@@ -17,10 +19,6 @@ public enum LevelType {
     private final String title;
     private final int level;
 
-    LevelType(String title, int level) {
-        this.title = title;
-        this.level = level;
-    }
 
     public static String findLevel(int level) {
         for (LevelType levelType : LevelType.values()) {
