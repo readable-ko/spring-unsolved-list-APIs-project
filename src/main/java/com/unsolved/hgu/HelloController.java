@@ -2,13 +2,11 @@ package com.unsolved.hgu;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class HelloController {
-    @GetMapping("/hello")
-    @ResponseBody
+    @GetMapping("/test")
     public String hello() {
-        return "Hello wonderful world";
+        return "mypage";
     }
 }
