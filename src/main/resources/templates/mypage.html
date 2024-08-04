@@ -55,23 +55,24 @@
                             </a>
                         </form>
                     </div>
-                    <div class="flex w-full justify-between py-3 items-center">
-                        <div class="flex flex-col">
-                            <dt class="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Solved 계정 연동 여부</dt>
-                            <dd class="text-lg font-semibold">+00 123 456 789 / +12 345 678</dd>
-                        </div>
-                        <a href="#" sec:authorize="isAuthenticated()"
-                           th:if="${#authentication.getPrincipal().getUsername() == user.getUsername()}"
-                           class="inline-flex items-center justify-center px-4 py-3 text-base font-medium text-center text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
-                            연동하기
-                            <svg class="w-5 h-5 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20"
-                                 xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd"
-                                      d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-                                      clip-rule="evenodd"></path>
-                            </svg>
-                        </a>
-                    </div>
+                    <!--CORS 오류로 기능 개발 불가능 보류-->
+                    <!--                    <div class="flex w-full justify-between py-3 items-center">-->
+                    <!--                        <div class="flex flex-col">-->
+                    <!--                            <dt class="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Solved 계정 연동 여부</dt>-->
+                    <!--                            <dd class="text-lg font-semibold" id="test">+00 123 456 789 / +12 345 678</dd>-->
+                    <!--                        </div>-->
+                    <!--                        <a href="javascript:void(0);" sec:authorize="isAuthenticated()" id="connect-button"-->
+                    <!--                           th:if="${#authentication.getPrincipal().getUsername() == user.getUsername()}"-->
+                    <!--                           class="inline-flex items-center justify-center px-4 py-3 text-base font-medium text-center text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800">-->
+                    <!--                            연동하기-->
+                    <!--                            <svg class="w-5 h-5 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20"-->
+                    <!--                                 xmlns="http://www.w3.org/2000/svg">-->
+                    <!--                                <path fill-rule="evenodd"-->
+                    <!--                                      d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"-->
+                    <!--                                      clip-rule="evenodd"></path>-->
+                    <!--                            </svg>-->
+                    <!--                        </a>-->
+                    <!--                    </div>-->
                     <div class="flex w-full justify-between pb-3">
                         <div class="flex flex-col">
                             <dt class="mb-1 text-gray-500 md:text-lg dark:text-gray-400">가입 경로</dt>
@@ -87,20 +88,20 @@
                         <label for="tabs" class="sr-only">Select tab</label>
                         <select id="tabs"
                                 class="bg-gray-50 border-0 border-b border-gray-200 text-gray-900 text-sm rounded-t-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                            <option>Solved.ac 정보</option>
+                            <!--                            <option>Solved.ac 정보</option>-->
                             <option>내 정보</option>
                             <!--                            <option>FAQ</option>-->
                         </select>
                     </div>
                     <ul class="hidden text-sm font-medium text-center text-gray-500 divide-x divide-gray-200 rounded-lg sm:flex dark:divide-gray-600 dark:text-gray-400 rtl:divide-x-reverse"
                         id="fullWidthTab" data-tabs-toggle="#fullWidthTabContent" role="tablist">
-                        <li class="w-full">
-                            <button id="stats-tab" data-tabs-target="#stats" type="button" role="tab"
-                                    aria-controls="stats" aria-selected="true"
-                                    class="inline-block w-full p-4 rounded-ss-lg bg-gray-50 hover:bg-gray-100 focus:outline-none dark:bg-gray-700 dark:hover:bg-gray-600">
-                                Solved.ac 정보
-                            </button>
-                        </li>
+                        <!--                        <li class="w-full">-->
+                        <!--                            <button id="stats-tab" data-tabs-target="#stats" type="button" role="tab"-->
+                        <!--                                    aria-controls="stats" aria-selected="true"-->
+                        <!--                                    class="inline-block w-full p-4 rounded-ss-lg bg-gray-50 hover:bg-gray-100 focus:outline-none dark:bg-gray-700 dark:hover:bg-gray-600">-->
+                        <!--                                Solved.ac 정보-->
+                        <!--                            </button>-->
+                        <!--                        </li>-->
                         <li class="w-full">
                             <button id="about-tab" data-tabs-target="#about" type="button" role="tab"
                                     aria-controls="about" aria-selected="false"
@@ -406,7 +407,22 @@
                 }
             });
         });
-    });
 
+        // $("#connect-button").on('click', function () {
+        //     if (confirm("Solved.ac와 계정을 연동하시겠습니까?")) {
+        //         $.ajax({
+        //             type: "GET",
+        //             url: "https://solved.ac/api/v3/account/verify_credentials",
+        //             contentType: "application/json",
+        //             success: function (response) {
+        //                 console.log(response)
+        //             },
+        //             error: function () {
+        //                 alert("Solved.ac 계정 연동에 실패했습니다.");
+        //             }
+        //         })
+        //     }
+        // });
+    });
 </script>
 </html>
