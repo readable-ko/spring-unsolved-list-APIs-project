@@ -7,6 +7,7 @@ import com.unsolved.hgu.problem.Problem;
 import com.unsolved.hgu.problem.ProblemRepository;
 import com.unsolved.hgu.question.Question;
 import com.unsolved.hgu.question.QuestionRepository;
+import com.unsolved.hgu.user.oauth.OAuth2UserDetails;
 import java.util.List;
 import java.util.Optional;
 import lombok.Builder;
@@ -20,6 +21,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -31,6 +34,7 @@ public class UserService {
     private final QuestionRepository questionRepository;
     private final AnswerRepository answerRepository;
     private final ProblemRepository problemRepository;
+    private final OAuth2AuthorizedClientService authorizedClientService;
 
     public SiteUser create(String username, String email, String password) {
         SiteUser siteUser = SiteUser.builder()
@@ -45,6 +49,7 @@ public class UserService {
         return siteUser;
     }
 
+    // 유저 닉네임 변경
     public SiteUser modifyUserName(SiteUser siteUser, String username) {
         SiteUser modifiedUser = siteUser.toBuilder()
                 .username(username)
@@ -56,8 +61,8 @@ public class UserService {
         return modifiedUser;
     }
 
-    private void reloadLoginStatus(SiteUser siteUser) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    // 사이트 로그인의 경우
+    private void reloadSiteLoginStatus(SiteUser siteUser, Authentication authentication) {
         UserDetails userDetails = new User(
                 siteUser.getUsername(),
                 siteUser.getPassword(),
@@ -69,6 +74,27 @@ public class UserService {
                 authentication.getAuthorities()
         );
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+    }
+
+    // 소셜 로그인 사용자의 경우
+    private void reloadOAuthLoginStatus(SiteUser siteUser, OAuth2AuthenticationToken authentication) {
+        OAuth2UserDetails userDetails = new OAuth2UserDetails(siteUser, authentication.getPrincipal().getAttributes());
+        OAuth2AuthenticationToken newAuth = new OAuth2AuthenticationToken(
+                userDetails,
+                authentication.getAuthorities(),
+                authentication.getAuthorizedClientRegistrationId()
+        );
+        SecurityContextHolder.getContext().setAuthentication(newAuth);
+    }
+
+    // 유저 닉네임 변경 후 정보 갱신 반영
+    private void reloadLoginStatus(SiteUser siteUser) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication instanceof OAuth2AuthenticationToken) {
+            reloadOAuthLoginStatus(siteUser, (OAuth2AuthenticationToken) authentication);
+        } else {
+            reloadSiteLoginStatus(siteUser, authentication);
+        }
     }
 
     public SiteUser getUser(String username) {

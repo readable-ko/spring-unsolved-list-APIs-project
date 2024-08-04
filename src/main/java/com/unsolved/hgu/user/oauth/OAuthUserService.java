@@ -23,7 +23,6 @@ class OAuthUserService extends DefaultOAuth2UserService {
     public OAuth2User loadUser(OAuth2UserRequest userRequest)
             throws OAuth2AuthenticationException {
         OAuth2User oAuth2User = super.loadUser(userRequest);
-        log.info("getAttributes : {}", oAuth2User.getAttributes());
 
         String provider = userRequest.getClientRegistration().getRegistrationId();
         OAuth2UserInfo oAuth2UserInfo = getOAuth2UserInfo(oAuth2User, provider);
@@ -49,7 +48,7 @@ class OAuthUserService extends DefaultOAuth2UserService {
         return new OAuth2UserDetails(siteUser, oAuth2User.getAttributes());
     }
 
-    public OAuth2UserInfo getOAuth2UserInfo(OAuth2User oAuth2User, String provider) {
+    private OAuth2UserInfo getOAuth2UserInfo(OAuth2User oAuth2User, String provider) {
         //Find provider
         for (OAuthType oAuthType : OAuthType.values()) {
             if (oAuthType.getProvider().equals(provider)) {
