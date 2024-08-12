@@ -14,6 +14,4 @@ public enum OrderType {
     COUNT("solvedCount");
 
     private final String title;
-
-
 }

@@ -36,3 +36,8 @@ public interface UserInfoRepository extends JpaRepository<UserInfo, Long> {
             + "ORDER BY COUNT(*) DESC ")
     Page<UserInfoContributeDto> findContributeUserInfo(@Param("kw") String kw, Pageable pageable);
 }
+
+/**
+ * SELECT * FROM (SELCT username, 검색할 컬럼, RANK (ORDER BY 검색할 컬럼 DESC) AS ranking FROM site_user) WHERE username =
+ * '%검색%'
+ */

@@ -15,4 +15,14 @@ public class MainController {
     public String root() {
         return "redirect:/unsolved-hgu";
     }
+
+    @GetMapping("/privacy")
+    public String privacy() {
+        return "privacy_policy";
+    }
+
+    @GetMapping("/terms")
+    public String terms() {
+        return "terms";
+    }
 }
